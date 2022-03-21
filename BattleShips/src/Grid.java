@@ -19,11 +19,6 @@ public class Grid {
             grid[i][0] = "" + letter++;
         }
 
-        //print grid with each array on its own line
-        for (String[] arr : grid) {
-            System.out.println(Arrays.toString(arr));
-        }
-
         //count variable to terminate while loop -> row and column variables
         int count = 0;
         int row;
