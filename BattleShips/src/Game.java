@@ -4,6 +4,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
+    public static void board(String[][] board) {
+        //print board after each guess may move this to only occur when user request and end of game-> todo create method for this to print at end of game and when user enters 'X'
+        for (String[] arr : board) {
+            System.out.println(Arrays.toString(arr));
+        }
+    }
+
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
@@ -94,9 +101,9 @@ public class Game {
         //following commented out code prints game board with ships locations -> for debugging
         /*for (String[] arr : grid) {
             System.out.println(Arrays.toString(arr));
-        }*/
+        }
         //print ship positions stored in 2D array
-        System.out.println(Arrays.deepToString(ships));
+        System.out.println(Arrays.deepToString(ships));*/
 //end of board print/creation
 
         //game board for user to see hits and misses -> not ship location
@@ -142,12 +149,16 @@ public class Game {
 
         while (hit < 9) {
             //accept user input for coordinate to fire shot at -> A1, B3, C5, G7
-            System.out.println("enter position\nenter 'S' for previous attempted coordinates");
+            System.out.println("enter position\nenter 'S' for previous attempted coordinates\nenter 'X' to see game board/enter 'Z' to see list of successful strikes");
             String position = input.nextLine().trim().toUpperCase(); //65 ASCII value for 'A' -> 49 ASCII value for 1
 
             if (position.equals("S")) {
                 System.out.println(attempts);
-            } else if (position.charAt(0) >= 65 && position.charAt(0) <= 71 && position.charAt(1) >= 49 && position.charAt(1) <= 55) {
+            } else if (position.equals("Z")) {
+                System.out.println(Arrays.toString(displayHit));
+            }else if (position.equals("X")) {
+                board(board);
+            }else if (position.charAt(0) >= 65 && position.charAt(0) <= 71 && position.charAt(1) >= 49 && position.charAt(1) <= 55) {
                 //convert the input so the first character is the row number and the second character is index number of entered coordinate
                 int rowGuess = position.charAt(0) - 64;//store ASCII value for number that corresponds to row number
                 int columnGuess = position.charAt(position.length() - 1) - 48;//store ASCII value for number that corresponds to column(index)
@@ -195,13 +206,11 @@ public class Game {
                 System.out.println("invalid input");
                 continue;
             }
-            //print board after each guess may move this to only occur when user request and end of game-> todo create method for this to print at end of game and when user enters 'X'
-            for (String[] arr : board) {
-                System.out.println(Arrays.toString(arr));
-            }
-            System.out.println(Arrays.toString(displayHit));
             attempts += position + " ";//store the previous guesses made by user
         }
         System.out.println("Game Over");
+        board(board);
+        //prints list of ship coordinates grouped together
+        System.out.println(Arrays.toString(displayHit));
     }
 }
