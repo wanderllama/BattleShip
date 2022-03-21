@@ -11,6 +11,9 @@ public class Game {
         //create 8x8 grid
         String[][]grid = new String[8][8];
 
+        //create 2D for ship positions -> each array element is a ship and has three elements for its positions
+        String[][] ships = new String[3][3];
+
         //first array in grid is [0, 1, 2, 3, 4, 5, 6, 7]
         for (int i = 0; i < grid[0].length; i++) {
             grid[0][i] = i + "";
@@ -45,6 +48,12 @@ public class Game {
                     grid[row][column] = "1";
                     grid[row][column + 1] = "1";
                     grid[row][column - 1] = "1";
+
+                    //convert the row value to letter, add the column value and create/store string in ships 2D array
+                    //use count variable to choose which element in 2D array
+                    ships[count][0] = "" + (char)(row + 64) + (column - 1);
+                    ships[count][1] = "" + (char)(row + 64) + column;
+                    ships[count][2] = "" + (char)(row + 64) + (column + 1);
                 } else {//restart loop if one coordinate for ship is not free
                     continue;
                 }
@@ -60,6 +69,12 @@ public class Game {
                     grid[row][column] = "1";
                     grid[row + 1][column] = "1";
                     grid[row - 1][column] = "1";
+
+                    //convert the row value to letter, add the column value and create/store string in ships 2D array
+                    //use count variable to choose which element in 2D array
+                    ships[count][0] = "" + (char)(row + 63) + column;
+                    ships[count][1] = "" + (char)(row + 64) + column;
+                    ships[count][2] = "" + (char)(row + 65) + column;
                 } else {//restart loop if one coordinate for ship is not free
                     continue;
                 }
@@ -81,9 +96,13 @@ public class Game {
         for (String[] arr : grid) {
             System.out.println(Arrays.toString(arr));
         }
-        //end of board print/creation
+        //print ship positions stored in 2D array
+        System.out.println(Arrays.deepToString(ships));
+//end of board print/creation
 
-
+        String[][] shipGuess = new String[3][3];
+        String[] displayHit = new String[9];
+        int[] shipHit = {0, 0, 0};
         String attempts = "";
         int hit = 0;
 
@@ -93,25 +112,44 @@ public class Game {
             String position = input.nextLine().trim().toUpperCase(); //65 ASCII value for 'A' -> 49 ASCII value for 1
 
             //convert the input so the first character is the row number and the second character is index number of entered coordinate
-            int rowGuess = position.charAt(0) -64;//store ASCII value for number that corresponds to row number
+            int rowGuess = position.charAt(0) - 64;//store ASCII value for number that corresponds to row number
             int columnGuess = position.charAt(position.length() - 1) - 48;//store ASCII value for number that corresponds to column(index)
 
-            if (grid[rowGuess][columnGuess].equals("" + '\u2693')) {
-                System.out.println("Hit");
-                hit++;
-                grid[rowGuess][columnGuess] = "2";
-            } else if (grid[rowGuess][columnGuess].equals(" ")) {
-                System.out.println("Miss");
-                grid[rowGuess][columnGuess] = "0";
-            } else if (grid[rowGuess][columnGuess].equals("2")) {
-                System.out.println("already hit boat in that position");
-                continue;
-            } else if (grid[rowGuess][columnGuess].equals("0")) {
-                System.out.println("already guessed that position");
-                continue;
+            switch (grid[rowGuess][columnGuess]) {
+                case "" + '\u2693':
+                    System.out.println("Hit");
+                    grid[rowGuess][columnGuess] = "2";
+                    for (int i = 0; i < ships.length; i++) {
+                        for (int j = 0; j < ships[i].length; j++) {
+                            if (ships[i][j].equals(position)) {
+                                shipGuess[i][j] = position;
+                                shipHit[i]++;
+                            }
+                        }
+                    }
+                    for (int num : shipHit) {
+                        if (num == 3) {
+                            System.out.println("sunk ship");
+                        }
+                    }
+                    displayHit[hit] = position;
+                    hit++;
+                    break;
+                case " ":
+                    System.out.println("Miss");
+                    grid[rowGuess][columnGuess] = "0";
+                    break;
+                case "2":
+                    System.out.println("already hit boat in that position");
+                    continue;
+                case "0":
+                    System.out.println("already guessed that position");
+                    continue;
             }
+            System.out.println(Arrays.toString(displayHit));
             attempts += position + " ";//store the previous guesses made by user
         }
 
+        System.out.println("Game Over");
     }
 }
