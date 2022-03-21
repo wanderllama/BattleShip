@@ -211,6 +211,6 @@ public class Game {
         System.out.println("Game Over");
         board(board);
         //prints list of ship coordinates grouped together
-        System.out.println(Arrays.toString(displayHit));
+        System.out.println(Arrays.toString(shipGuess));
     }
 }
