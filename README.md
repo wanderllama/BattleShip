@@ -8,7 +8,7 @@ add three gamepieces with size 1x3
   -pieces represented with uinicode character of an anchor  
   -empty space represented with single ' ' character  
   
-#TODO\n  
+#TODO  
 create main method  
 use grid class to generate game board  
 accept user input for "shot" that matches the key  
