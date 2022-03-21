@@ -4,9 +4,9 @@ A fully working battle ships game
 #FINISHED  
 8x8 board with coordinates key included  
 add three gamepieces with size 1x3  
-\t-no duplicates  
-\t-pieces represented with uinicode character of an anchor  
-\t-empty space represented with single ' ' character  
+"\t"-no duplicates  
+"\t"-pieces represented with uinicode character of an anchor  
+"\t"-empty space represented with single ' ' character  
   
 #TODO  
 create main method  
