@@ -1,6 +1,13 @@
 A fully working battle ships game  
 
-need unicode support to work
+newest version does not rely on unicode character  
+changed them to numbers  
+1 represents a hit  
+0 represents a miss  
+empty space represents possible ships  
+  
+old version info below  
+need unicode support to work  
 
 add next two lines to intellij custom vm options  
 -Dconsole.encoding=UTF-8  
