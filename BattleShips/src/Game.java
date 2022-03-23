@@ -4,13 +4,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
-    public static void board(String[][] board) {
-        //print board after each guess may move this to only occur when user request and end of game-> todo create method for this to print at end of game and when user enters 'X'
-        for (String[] arr : board) {
-            System.out.println(Arrays.toString(arr));
-        }
-    }
-
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
@@ -88,13 +81,13 @@ public class Game {
             }
             count++;
         }
-        //change null values to ' ' character for nicer print
+        //change null values to ' ' character for nicer print -> u2693 anchor unicode
         for (int i = 1; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == null) {
                     grid[i][j] = " ";
                 } else if (grid[i][j].equals("1")) {
-                    grid[i][j] = "" + '\u2693';
+                    grid[i][j] = "" + '3';
                 }
             }
         }
@@ -118,11 +111,11 @@ public class Game {
         for (int i = 1; i < board.length; i++) {
             board[i][0] = "" + letterBoard++;
         }
-        //change null space to sine wave unicode character
+        //change null space to space character
         for (int i = 1; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == null) {
-                    board[i][j] = "\u223f";
+                    board[i][j] = " ";
                 }
             }
         }//end of display board setup
@@ -149,22 +142,20 @@ public class Game {
 
         while (hit < 9) {
             //accept user input for coordinate to fire shot at -> A1, B3, C5, G7
-            System.out.println("enter position\nenter 'S' for previous attempted coordinates\nenter 'X' to see game board/enter 'Z' to see list of successful strikes");
+            System.out.println("enter position\nenter 'S' for previous attempted coordinates\nenter 'Z' to see list of successful strikes");
             String position = input.nextLine().trim().toUpperCase(); //65 ASCII value for 'A' -> 49 ASCII value for 1
 
             if (position.equals("S")) {
                 System.out.println(attempts);
             } else if (position.equals("Z")) {
                 System.out.println(Arrays.toString(displayHit));
-            }else if (position.equals("X")) {
-                board(board);
-            }else if (position.charAt(0) >= 65 && position.charAt(0) <= 71 && position.charAt(1) >= 49 && position.charAt(1) <= 55) {
+            } else if (position.charAt(0) >= 65 && position.charAt(0) <= 71 && position.charAt(1) >= 49 && position.charAt(1) <= 55) {
                 //convert the input so the first character is the row number and the second character is index number of entered coordinate
                 int rowGuess = position.charAt(0) - 64;//store ASCII value for number that corresponds to row number
                 int columnGuess = position.charAt(position.length() - 1) - 48;//store ASCII value for number that corresponds to column(index)
 
                 switch (grid[rowGuess][columnGuess]) {
-                    case "" + '\u2693'://coordinates of game board has anchor unicode character as element
+                    case "" + '3'://coordinates of game board has anchor unicode character as element
                         System.out.println("Hit");
                         grid[rowGuess][columnGuess] = "2";//change element value to 2
                         //determine position of master list of existing ship coordinates and add hit coordinate to shipGuess array
@@ -186,14 +177,14 @@ public class Game {
                         displayHit[hit] = position;
                         //hit counter increments
                         hit++;
-                        //add skull and crossbones unicode character to display board for users hit
-                        board[rowGuess][columnGuess] = "\u2620";
+                        //add skull and crossbones unicode character to display board for users hit -> u2620
+                        board[rowGuess][columnGuess] = "1";
                         break;
                     case " ":
                         System.out.println("Miss");
                         grid[rowGuess][columnGuess] = "0";
                         //add miss character to display board
-                        board[rowGuess][columnGuess] = "\u2327";
+                        board[rowGuess][columnGuess] = "0";
                         break;
                     case "2":
                         System.out.println("already hit boat in that position");
@@ -206,11 +197,22 @@ public class Game {
                 System.out.println("invalid input");
                 continue;
             }
+            //print board for user after each shot using method
+            debugV2((Object) board);
             attempts += position + " ";//store the previous guesses made by user
         }
         System.out.println("Game Over");
-        board(board);
         //prints list of ship coordinates grouped together
         System.out.println(Arrays.toString(shipGuess));
+        //use method to format 2d array for print
+        debugV2((Object) board);
+    }
+
+    //thanks for to PRO_GrAMmER for the method to format table
+    static void debugV2(Object... obj) {
+        System.out.print(" ");
+        System.out.println(Arrays.deepToString(obj)
+                .replace("],", "\n").replace(",", " ")
+                .replaceAll("[\\[\\]]", ""));
     }
 }
