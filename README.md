@@ -2,7 +2,7 @@ A fully working battle ships game
 
 need unicode support to work
 
-add next two lines to intellij custom vm options
+add next two lines to intellij custom vm options  
 -Dconsole.encoding=UTF-8  
 -Dfile.encoding=UTF-8  
 
